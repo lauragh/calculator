@@ -25,7 +25,6 @@ export class AppComponent {
 
   getNumber(num: number): void{
     this.num1.push(num);
-    console.log(this.num1);
     this.operation += num.toString();
   }
 
@@ -36,13 +35,13 @@ export class AppComponent {
     this.operation += op;
 
     this.numString = '';
+
     for(let i of this.num1){
-      console.log('numero del array num1', i)
       this.numString += i.toString();
     }
+
     this.numbers.push(Number(this.numString));
     this.num1 = [];
-    console.log('numero completo',this.numString);
 
     if(op === '='){
       this.solveOperation();
@@ -56,30 +55,20 @@ export class AppComponent {
   }
 
   solveOperation(): void{
-    console.log(this.numbers[0], this.numbers[1]);
-
     switch(this.op) {
       case "+":
         this.result = this.numbers[0] + this.numbers[1];
-        console.log(this.result);
-
         break;
       case "-":
         this.result = this.numbers[0] - this.numbers[1];
-        console.log(this.result);
-
         break;
       case "*":
         this.result = this.numbers[0] * this.numbers[1];
-        console.log(this.result);
-
         break;
       case "/":
         this.result = this.numbers[0] / this.numbers[1];
-        console.log(this.result);
         break;
       default:
-        // code block
     }
 
     this.operation += this.result;
