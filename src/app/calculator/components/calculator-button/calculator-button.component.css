@@ -1,0 +1,15 @@
+button {
+  @apply w-full h-16 outline-none focus:outline-none hover:bg-indigo-700 hover:bg-opacity-20 text-white text-xl font-light
+}
+
+/* 1a solución */
+/* Usando ng-deep reconoce la clase porque no la encapsula, la convierte como global*/
+/* ::ng-deep .is-command {
+  @apply bg-indigo-700 bg-opacity-20;
+} */
+
+
+/* 4a solución, poner la clase al botón directamente y no al host */
+.is-command {
+  @apply bg-indigo-700 bg-opacity-20;
+}
