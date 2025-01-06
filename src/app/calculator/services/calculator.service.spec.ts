@@ -85,10 +85,20 @@ describe('CalculatorService', () => {
     expect(service.resultText()).toBe('1');
   });
 
-  it('should calculate result correctly for division', () => {
+  it('should calculate result correctly for division "/"', () => {
     service.constructNumber('1');
     service.constructNumber('0');
     service.constructNumber('/');
+    service.constructNumber('2');
+    service.constructNumber('=');
+
+    expect(service.resultText()).toBe('5');
+  });
+
+  it('should calculate result correctly for division "÷"', () => {
+    service.constructNumber('1');
+    service.constructNumber('0');
+    service.constructNumber('÷');
     service.constructNumber('2');
     service.constructNumber('=');
 
@@ -134,6 +144,14 @@ describe('CalculatorService', () => {
 
     service.constructNumber('Backspace');
     expect(service.resultText()).toBe('0');
+
+    service.constructNumber('0');
+    service.constructNumber('Backspace');
+    expect(service.resultText()).toBe('0');
+
+    service.resultText.set('-2');
+    service.constructNumber('Backspace');
+    expect(service.resultText()).toBe('0');
   });
 
   it('should handle maxLength correctly', () => {
@@ -145,5 +163,29 @@ describe('CalculatorService', () => {
 
     service.constructNumber('1');
     expect(service.resultText().length).toBe(10);
+  });
+
+  it('should handle adding multiple 0s', () => {
+    service.resultText.set('-0');
+    service.constructNumber('5');
+
+    expect(service.resultText()).toBe('-5');
+  });
+
+  it('should rewrite resultText after calculating', async () => {
+    service.constructNumber('1');
+    service.constructNumber('+');
+    service.constructNumber('2');
+
+    await service.constructNumber('=');
+    expect(service.hasCalculated).toBe(true);
+    expect(service.resultText()).toBe('3');
+
+    service.constructNumber('2');
+    expect(service.resultText()).toBe('2');
+  });
+
+  it('should handle invalid input', async () => {
+    service.constructNumber('a');
   });
 })

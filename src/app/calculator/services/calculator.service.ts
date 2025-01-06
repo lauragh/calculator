@@ -17,7 +17,6 @@ export class CalculatorService {
 
   public async constructNumber(value: string): Promise<void>{
     if(this.hasCalculated && this.resultText() && this.subResultText() === '0' && numbers.includes(value)){
-      console.log('entro');
       this.resultText.set(value);
       this.hasCalculated = false;
       return;
@@ -99,17 +98,18 @@ export class CalculatorService {
         this.resultText.update(text => text.slice(1));
         return;
       }
-      this.resultText.update(text => `-${text}`);
+      this.resultText.update(text => `-${text}`);222
       return;
     }
 
     //Números
     if(numbers.includes(value)){
+      //Si el resultText está en 0 y presionas un número, se setea al número en sí
       if(this.resultText() === '0'){
         this.resultText.set(value);
         return;
       }
-
+      //Si el resultText está en -0 y presionas un número, se setea al número en sí
       else if(this.resultText() === '-0'){
         this.resultText.set(`-${value}`);
         return;
