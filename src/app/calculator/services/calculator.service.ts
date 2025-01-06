@@ -17,10 +17,12 @@ export class CalculatorService {
 
   public async constructNumber(value: string): Promise<void>{
     if(this.hasCalculated && this.resultText() && this.subResultText() === '0' && numbers.includes(value)){
+      console.log('entro');
       this.resultText.set(value);
       this.hasCalculated = false;
       return;
     }
+
     //Validar input
     if(![...numbers, ...operators, ...specialOperators].includes(value)){
       console.log('Invalid input', value);
@@ -62,7 +64,7 @@ export class CalculatorService {
 
     //Aplicar operador
     if(operators.includes(value)){
-      this.calculateResult();
+      // await this.calculateResult();
       this.lastOperator.set(value);
       this.subResultText.set(this.resultText());
       this.resultText.set('0');
@@ -77,10 +79,11 @@ export class CalculatorService {
 
     //Validar punto decimal
     if(value === '.' && !this.resultText().includes('.')){
-      if(this.resultText() === ''){
+      if(this.resultText() === '0' || this.resultText() === ''){
         this.resultText.set('0.');
         return;
       }
+
       this.resultText.update(text => text + '.');
       return;
     }
@@ -112,9 +115,10 @@ export class CalculatorService {
         return;
       }
 
+      this.resultText.update(text => text + value);
+      return;
     }
 
-    this.resultText.update(text => text + value);
   }
 
   public async calculateResult(){
@@ -143,6 +147,5 @@ export class CalculatorService {
 
     this.resultText.set(result.toString());
     this.subResultText.set('0');
-
   }
 }
