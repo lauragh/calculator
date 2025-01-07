@@ -55,11 +55,15 @@ describe('CalculatorButton', () => {
   it('should emit onClick when handleClick() is called', () => {
     //Espías, están pendientes de sucesos
     spyOn(component.onClick, 'emit');
-
     component.handleClick();
-
     expect(component.onClick.emit).toHaveBeenCalled();
-    // expect(component.onClick.emit).toHaveBeenCalledWith('1');
+  });
+
+  it('should not emit onClick when contentValue is not defined', () => {
+    spyOn(component, 'contentValue').and.returnValue(undefined);
+    spyOn(component.onClick, 'emit');
+    component.handleClick();
+    expect(component.onClick.emit).not.toHaveBeenCalled();
   });
 
   it('should set isPressed to true and then false when keyboardPressedStyle is called with a matching key', (done) => {
@@ -76,7 +80,6 @@ describe('CalculatorButton', () => {
     }, 101);
   });
 
-
   it('should not set isPressed to true if key is not matching', () => {
     component.contentValue()!.nativeElement.innerText = '1';
     component.keyboardPressedStyle('2');
@@ -84,23 +87,23 @@ describe('CalculatorButton', () => {
     expect(component.isPressed()).toBeFalse();
   });
 
+  it('should not set isPressed to true if contentValue is not defined', () => {
+    (component as any).contentValue = undefined;
+
+    // Espiar isPressed.set para confirmar que no se ejecuta
+    spyOn(component.isPressed, 'set');
+    component.keyboardPressedStyle('1');
+    expect(component.isPressed.set).not.toHaveBeenCalled();
+  });
+
   it('should display projected content', () => {
     const testHostFixture = TestBed.createComponent(TestHostComponent);
-    console.log(testHostFixture.debugElement); //Esto te muestra más atributos aparte del nativeElement
+    // console.log(testHostFixture.debugElement); //Esto te muestra más atributos aparte del nativeElement
     const compiled = testHostFixture.nativeElement as HTMLDivElement;
     const projectedContent = compiled.querySelector('.projected-content');
     expect(projectedContent).not.toBeNull();
     expect(projectedContent?.classList.contains('underline')).toBeTrue();
-
   });
 
-  // it('should contain basic css classes', () => {
-  //   const divElement = compiled.querySelector('div');
-  //   const divClasses = divElement?.classList.value.split(' ');
-  //   const mustHaveClasses = 'border-r border-b border-indigo-400'.split(' ');
 
-  //   mustHaveClasses.forEach(className => {
-  //     expect(divClasses).toContain(className)
-  //   })
-  // });
 });
